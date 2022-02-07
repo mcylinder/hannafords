@@ -1,0 +1,22 @@
+Routes => Components
+
+/           => ShoppinglistItem
+/pantry     => Pantry
+/form       => Form (new)
+/form/:id   => Form (revise, delete)
+
+Fields
+name (string)
+location (string)
+include (boolean)
+picked_up (boolean)
+sequence (integer)
+image (text) (base64??)
+
+
+[x]  commit plan
+[ ]  stub pages
+[ ]  stub components
+[ ]  layout
+[ ]  router
+[ ]  form fields: name, location, image(wait for editor UI)
