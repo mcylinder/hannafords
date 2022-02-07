@@ -15,7 +15,7 @@ image (text) (base64??)
 
 
 [x]  commit plan
-[ ]  stub pages
+[x]  stub pages
 [ ]  stub components
 [ ]  layout
 [ ]  router
