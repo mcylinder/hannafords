@@ -16,7 +16,7 @@ image (text) (base64??)
 
 [x]  commit plan
 [x]  stub pages
-[ ]  stub components
+[x]  stub components & layout
 [ ]  layout
 [ ]  router
 [ ]  form fields: name, location, image(wait for editor UI)
