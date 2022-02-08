@@ -17,6 +17,8 @@ image (text) (base64??)
 [x]  commit plan
 [x]  stub pages
 [x]  stub components & layout
-[ ]  layout
-[ ]  router
-[ ]  form fields: name, location, image(wait for editor UI)
+[x]  layout
+[x]  router
+[x]  form fields: name, location, image(use Hannaford URL)
+[ ]  setup Redux Toolkit, use Async, submit & list
+[ ]  delete & revise

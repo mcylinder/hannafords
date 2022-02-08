@@ -1,6 +1,9 @@
+import { useLocation } from 'react-router-dom'
+
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React from 'react'
+import { Link } from 'react-router-dom';
+import Add from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -18,7 +21,10 @@ const useStyles = makeStyles((theme) => {
             marginTop: '64px',
             height: '100vh'
         },
-        header: { marginRight: theme.spacing(1) },
+        header: {
+            marginRight: theme.spacing(1),
+            color: '#333333',
+        },
         toolBar: {
             display: 'flex',
             flexDirection: 'row',
@@ -26,7 +32,11 @@ const useStyles = makeStyles((theme) => {
         },
         box: {
             display: 'flex',
-            alignItems: 'baseline',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: theme.spacing(17),
+            height: theme.spacing(7)
+
         },
         countStatus: {
             marginRight: theme.spacing(1)
@@ -36,6 +46,7 @@ const useStyles = makeStyles((theme) => {
 
 export default function Layout({ children }) {
     const classes = useStyles();
+    const location = useLocation();
 
     return (
         <div className={classes.root}>
@@ -46,12 +57,21 @@ export default function Layout({ children }) {
             >
 
                 <Toolbar className={classes.toolBar}>
+                    <Link style={{ textDecoration: 'none' }} to="/">
                     <Typography gutterBottom variant="h5" className={classes.header} component="div" >Shoppinglist</Typography>
+                    </Link>
                     <Box className={classes.box}>
                         <Typography className={classes.countStatus}>
                             6 of 15
                         </Typography>
-                        <Button size="small">Pantry</Button>
+                        {location.pathname === '/pantry' ? (
+                            <Link style={{ textDecoration: 'none' }} to="/form">
+                                <Add style={{ color: 'black' }} />
+                            </Link>
+                        ) : (
+                            <Link style={{ textDecoration: 'none' }} to="/pantry">
+                                    <Button size="small">Pantry</Button>
+                            </Link>)}
                     </Box>
                 </Toolbar>
             </AppBar>

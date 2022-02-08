@@ -7,8 +7,6 @@ import Shoppinglist from './pages/Shoppinglist';
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import Layout from './layout/Layout';
 
-
-
 const theme = createTheme({
   typography: {
     fontFamily: 'Rubik',
@@ -18,7 +16,6 @@ const theme = createTheme({
     fontWeightBold: 500,
   }
 })
-
 
 export default function App() {
   return (
