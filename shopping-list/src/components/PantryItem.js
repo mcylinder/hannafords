@@ -1,5 +1,8 @@
-import { makeStyles } from '@material-ui/styles'
+import { useDispatch } from "react-redux";
+import { deleteItemAsync } from "../redux/itemSlice";
 
+import { makeStyles } from '@material-ui/styles'
+import { Link } from 'react-router-dom';
 import { CardMedia, Checkbox, IconButton } from '@material-ui/core';
 import BookmarkBorder from '@material-ui/icons/BookmarkBorder';
 import Bookmark from '@material-ui/icons/Bookmark';
@@ -21,6 +24,12 @@ export default function PantryItem({ row }) {
 
     const classes = useStyles();
 
+    const dispatch = useDispatch();
+
+    const deleteItem = (deleteId) => {
+        dispatch(deleteItemAsync({ id: deleteId }));
+    };
+
     return (
         <TableRow
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -37,8 +46,8 @@ export default function PantryItem({ row }) {
                 <CardMedia
                     className={classes.cardMedia}
                     component="img"
-                    image={'https://images.hannaford.com/GetImage.aspx?vector=fR46NeaI7CSRJCnzCVdqRONgRpRqCxtWAZbG+kWHrkke21xRZClo8jdaqitFi03g'}
-                    alt="green iguana"
+                    image={row.image}
+                    alt={row.name}
                 />
             </TableCell>
 
@@ -49,12 +58,16 @@ export default function PantryItem({ row }) {
             <TableCell align="right">{row.location}</TableCell>
 
             <TableCell >
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" onClick={() => deleteItem(row.id)}>
                     <Delete />
                 </IconButton>
+
+                <Link to={"/form/" + row.id}>
                 <IconButton aria-label="edit">
                     <Edit />
                 </IconButton>
+                </Link>
+
             </TableCell>
         </TableRow>
     )

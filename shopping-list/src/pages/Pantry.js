@@ -1,4 +1,4 @@
-
+import { useEffect } from 'react';
 import PantryItem from '../components/PantryItem';
 
 import Table from '@material-ui/core/Table';
@@ -9,7 +9,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getItemsAsync } from '../redux/itemSlice';
+
 
 
 const useStyles = makeStyles((theme) => {
@@ -23,22 +27,18 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
-function createData(name, location) {
-    return { name, location };
-}
-
-const rows = [
-    createData('Frozen yoghurt1', '6A'),
-    createData('Frozen yoghurt2', '6A'),
-    createData('Frozen yoghurt3', '6A'),
-    createData('Frozen yoghurt4', '6A'),
-    createData('Frozen yoghurt5', '6A'),
-    createData('Frozen yoghurt6', '6A'),
-];
-
 export default function Pantry() {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+    const stateItems = useSelector((state) => state.items);
+    const items = Object.values(stateItems);
+
+    useEffect(() => {
+        dispatch(getItemsAsync());
+    }, [dispatch]);
+
 
     return (
         <TableContainer component={Paper}>
@@ -53,9 +53,10 @@ export default function Pantry() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <PantryItem key={row.name} row={row} />
+                    {items.map((item) => (
+                        <PantryItem key={item.id} row={item} />
                     ))}
+
                 </TableBody>
             </Table>
         </TableContainer>

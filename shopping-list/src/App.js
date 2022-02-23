@@ -29,9 +29,14 @@ export default function App() {
             <Route path="/pantry">
               <Pantry />
             </Route>
+
+            <Route path="/form/:id">
+              <Form />
+            </Route>
             <Route path="/form">
               <Form />
             </Route>
+
           </Switch>
         </Layout>
       </Router>
