@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from 'react-router-dom'
 import { useDispatch } from "react-redux";
-import { addItemAsync, getItemAsync } from "../redux/itemSlice";
+import { addItemAsync, getItemAsync, updateItemAsync } from "../redux/itemSlice";
 
 import { Box, Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -40,22 +40,21 @@ export default function Form() {
     const [valid, setValidate] = useState(false);
 
     const [imgstring, setImgstring] = useState('');
-    const [dbName, setDbName] = useState('');
-    const [dbLocation, setDbLocation] = useState('');
+    const [imgdb, setImgdb] = useState(null);
 
+    const [dataToSubmit, setDataToSubmit] = useState({
+        name: '',
+        location: '',
+        image: ''
+    });
 
     const dispatch = useDispatch();
 
-    const [dataToSubmit, setDataToSubmit] = useState({
-        name: null,
-        location: null,
-        image: null
-    });
-
     const setImgSrc = (srcStrng) => {
-        let revisedData = dataToSubmit;
-        revisedData.image = srcStrng;
-        setDataToSubmit(revisedData);
+        setDataToSubmit(prevState => ({
+            ...prevState,
+            image: srcStrng
+        }));
         validateFields();
     }
 
@@ -63,21 +62,34 @@ export default function Form() {
         let validCount = 0;
         for (const key in dataToSubmit) {
             let fieldValue = dataToSubmit[key] ?? "";
-            if (fieldValue.length > 1) validCount++;
+            if (fieldValue.length > 0) validCount++;
         }
 
         setValidate(validCount >= 3);
     }
 
-    const preparedData = (event) => {
-        let targ = event.target;
-        let revisedData = dataToSubmit;
-        revisedData[targ.name] = targ.value;
-        setDataToSubmit(revisedData);
+    const onChange = event => {
+        const { name, value } = event.target;
+        setDataToSubmit(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
         validateFields();
     };
 
     const sendData = () => {
+
+        if (params.id) {
+            dataToSubmit['id'] = params.id;
+            dispatch(updateItemAsync(dataToSubmit)).unwrap()
+                .then((result) => {
+                    history.push("/pantry");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+
+        } else { 
         dispatch(addItemAsync(dataToSubmit)).unwrap()
             .then((result) => {
                 history.push("/pantry");
@@ -85,6 +97,8 @@ export default function Form() {
             .catch((err) => {
                 console.log(err);
             })
+
+        }
     };
 
     useEffect(() => {
@@ -92,19 +106,22 @@ export default function Form() {
             dispatch(getItemAsync({ id: params.id })).unwrap()
                 .then((result) => {
                     console.log(result.item);
-                    setDbName(result.item.name)
-                    setDbLocation(result.item.location)
-                    setImgstring(result.item.image)
+
+                    setDataToSubmit(prevState => ({
+                        ...prevState,
+                        name: result.item.name,
+                        location: result.item.location,
+                        image: result.item.image
+                    }));
+
+                    setImgdb(result.item.image);
 
                 })
                 .catch((err) => {
                     console.log(err);
                 })
-
         }
-
     }, []);
-
 
     return (
         <Box
@@ -113,27 +130,24 @@ export default function Form() {
             autoComplete="off"
             className={classes.formStyle}
         >
-
-
-
             <TextField
                 required
                 label="Item name"
-                value={dbName}
+                value={dataToSubmit.name}
                 className={classes.textInput}
                 name="name"
-                onChange={(e) => preparedData(e)}
+                onChange={onChange}
             />
             <TextField
                 required
                 label="Location"
-                value={dbLocation}
+                value={dataToSubmit.location}
                 name="location"
-                onChange={(e) => preparedData(e)}
+                onChange={onChange}
                 className={classes.textInput}
             />
 
-            <ImageEdit setImgSrc={setImgSrc} />
+            <ImageEdit setImgSrc={setImgSrc} imgdb={imgdb} />
 
             <Button
                 variant="outlined"

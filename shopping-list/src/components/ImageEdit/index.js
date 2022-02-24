@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
-export default function ImageEdit({ setImgSrc }) {
+export default function ImageEdit({ setImgSrc, imgdb }) {
 
     const classes = useStyles();
 
@@ -31,10 +31,15 @@ export default function ImageEdit({ setImgSrc }) {
     const [showPicker, setShowPicker] = useState(true);
     const [showStatus, setShowStatus] = useState('crop');
 
-
     useEffect(() => {
         setShowPicker(null === srcImg);
     }, [srcImg]);
+
+
+    useEffect(() => {
+        setSrcImg(imgdb);
+    }, [imgdb]);
+
 
     const handleImage = async (event) => {
         setSrcImg(URL.createObjectURL(event.target.files[0]));

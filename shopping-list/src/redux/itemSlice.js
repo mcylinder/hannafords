@@ -35,16 +35,39 @@ export const addItemAsync = createAsyncThunk(
     }
 );
 
-export const toggleCompleteAsync = createAsyncThunk(
-    'items/completeItemAsync',
+export const updateItemAsync = createAsyncThunk(
+    'items/updateItemAsync',
     async (payload) => {
         const resp = await fetch(`${ENDPOINT_API}/${payload.id}`, {
-            method: 'PATCH',
-            mode: 'no-cors',
+            method: 'PUT',
+            mode: 'cors',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Accept": "application/json, text-plain, */*",
             },
-            body: JSON.stringify({ completed: payload.completed }),
+            body: JSON.stringify(payload),
+        });
+
+        if (resp.ok) {
+            const item = await resp.json();
+            return { item };
+        }
+    }
+);
+
+export const toggleStatusAsync = createAsyncThunk(
+    'items/toggleStatusAsync',
+    async ({ id, field, status }) => {
+        let submitData = {};
+        submitData[field] = status;
+        const resp = await fetch(`${ENDPOINT_API}/${id}`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json, text-plain, */*",
+            },
+            body: JSON.stringify(submitData),
         });
 
         if (resp.ok) {
@@ -80,49 +103,60 @@ export const getItemAsync = createAsyncThunk(
     }
 );
 
+export const updateOrderAsync = createAsyncThunk(
+    'items/updateOrderAsync',
+    async (payload) => {
+        const resp = await fetch(ENDPOINT_API + '/reorder', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json, text-plain, */*",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (resp.ok) {
+            const items = await resp.json();
+
+            return { items };
+        }
+    }
+)
+
 
 
 
 export const itemSlice = createSlice({
     name: 'items',
     initialState: [],
-    reducers: {
-        // additem: (state, action) => {
-        //     const item = {
-        //         id: nanoid(),
-        //         title: action.payload.title,
-        //         completed: false,
-        //     };
-        //     state.push(item);
-        // },
-        // // toggleComplete: (state, action) => {
-        // //     const index = state.findIndex((item) => item.id === action.payload.id);
-        // //     state[index].completed = action.payload.completed;
-        // // },
-        // deleteitem: (state, action) => {
-        //     return state.filter((item) => item.id !== action.payload.id);
-        // },
-    },
+    reducers: {},
     extraReducers: {
         [getItemsAsync.fulfilled]: (state, action) => {
             return action.payload.items;
         },
         [addItemAsync.fulfilled]: (state, action) => {
             state.push(action.payload.item);
-
         },
-        [toggleCompleteAsync.fulfilled]: (state, action) => {
+        [updateItemAsync.fulfilled]: (state, action) => {
+            state.push(action.payload.item);
+        },
+        [toggleStatusAsync.fulfilled]: (state, action) => {
             const index = state.findIndex(
                 (item) => item.id === action.payload.item.id
             );
-            state[index].completed = action.payload.item.completed;
+            state.splice(index, 1);
+            state.push(action.payload.item);
         },
         [deleteItemAsync.fulfilled]: (state, action) => {
             return state.filter((item) => item.id !== action.payload.id);
         },
+        [updateOrderAsync.fulfilled]: (state, action) => {
+            return action.payload.items;
+        },
     },
 });
 
-export const { addItem, toggleComplete, deleteItem } = itemSlice.actions;
+export const { addItem, toggleStatus, deleteItem, updateItem } = itemSlice.actions;
 
 export default itemSlice.reducer;

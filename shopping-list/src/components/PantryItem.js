@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteItemAsync } from "../redux/itemSlice";
+import { deleteItemAsync, toggleStatusAsync } from "../redux/itemSlice";
 
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom';
@@ -10,6 +10,8 @@ import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import { useState } from "react";
+
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
-export default function PantryItem({ row }) {
+export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd, setOverId, clName }) {
 
     const classes = useStyles();
 
@@ -30,13 +32,39 @@ export default function PantryItem({ row }) {
         dispatch(deleteItemAsync({ id: deleteId }));
     };
 
+    const toggleUseInList = (row) => {
+        let status = row.use_in_list ? 0 : 1;
+        dispatch(toggleStatusAsync({ id: row.id, field: 'use_in_list', status: status }));
+    };
+
+    // const [overId, setOverId] = useState(null);
+
+
+    const dragFeedback = (ev) => {
+        ev.preventDefault()
+        if (ev.type === 'dragover') {
+            setOverId(parseInt(ev.currentTarget.id));
+        } else {
+            setOverId(null);
+        }
+    };
+
+
     return (
         <TableRow
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            draggable={true}
+            id={row.id}
+            onDragStart={handleDrag}
+            onDragEnd={handleDragEnd}
+            onDrop={handleDrop}
+            onDragOver={dragFeedback}
+            onDragLeave={dragFeedback}
+            className={clName}
         >
             <TableCell component="th" scope="row">
                 <Checkbox
-                    // checked
+                    aria-label="use in list" onClick={() => toggleUseInList(row)}
+                    checked={row.use_in_list == 1}
                     icon={<BookmarkBorder />}
                     checkedIcon={<Bookmark />}
                 />
@@ -55,7 +83,7 @@ export default function PantryItem({ row }) {
                 {row.name}
             </TableCell>
 
-            <TableCell align="right">{row.location}</TableCell>
+            <TableCell align="right">{row.location} </TableCell>
 
             <TableCell >
                 <IconButton aria-label="delete" onClick={() => deleteItem(row.id)}>

@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dropIntend th{
+    padding-top: 107px;
+}
+
+.selectRow {
+visibility: hidden;
+}
+table{border-collapse:separate; 
+  border-spacing:5em;}
