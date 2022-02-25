@@ -38,10 +38,8 @@ export default function Form() {
     const history = useHistory();
     const classes = useStyles();
     const [valid, setValidate] = useState(false);
-
     const [imgstring, setImgstring] = useState('');
     const [imgdb, setImgdb] = useState(null);
-
     const [dataToSubmit, setDataToSubmit] = useState({
         name: '',
         location: '',
@@ -78,7 +76,6 @@ export default function Form() {
     };
 
     const sendData = () => {
-
         if (params.id) {
             dataToSubmit['id'] = params.id;
             dispatch(updateItemAsync(dataToSubmit)).unwrap()
@@ -88,7 +85,6 @@ export default function Form() {
                 .catch((err) => {
                     console.log(err);
                 })
-
         } else { 
         dispatch(addItemAsync(dataToSubmit)).unwrap()
             .then((result) => {
@@ -97,7 +93,6 @@ export default function Form() {
             .catch((err) => {
                 console.log(err);
             })
-
         }
     };
 
@@ -105,7 +100,6 @@ export default function Form() {
         if (params.id) {
             dispatch(getItemAsync({ id: params.id })).unwrap()
                 .then((result) => {
-                    console.log(result.item);
 
                     setDataToSubmit(prevState => ({
                         ...prevState,
@@ -115,7 +109,7 @@ export default function Form() {
                     }));
 
                     setImgdb(result.item.image);
-
+                    validateFields();
                 })
                 .catch((err) => {
                     console.log(err);
@@ -148,7 +142,6 @@ export default function Form() {
             />
 
             <ImageEdit setImgSrc={setImgSrc} imgdb={imgdb} />
-
             <Button
                 variant="outlined"
                 disabled={!valid}

@@ -14,24 +14,18 @@ import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { getItemsAsync, updateOrderAsync } from '../redux/itemSlice';
 
-
-
-
 const useStyles = makeStyles((theme) => {
     return {
-
         cardMedia: {
             objectFit: 'contain',
             height: theme.spacing(9),
         },
-
-
     }
 });
 
 export default function Pantry() {
 
-    const classes = useStyles();
+    // const classes = useStyles();
     const dispatch = useDispatch();
     const stateItems = useSelector((state) => state.items);
     const [items, setItems] = useState([]);
@@ -46,8 +40,6 @@ export default function Pantry() {
     }, [stateItems]);
 
     const handleDrag = (ev) => {
-        //   ev.stopPropagation();
-        // console.log(ev);
         ev.target.style.opacity = .4;
         setDragId(ev.currentTarget.id);
     }
@@ -60,12 +52,7 @@ export default function Pantry() {
     const [overId, setOverId] = useState(null);
 
     const handleDrop = (ev) => {
-        // let dropIntend = document.getElementsByClassName('dropIntend');
-        // dropIntend[0].classList.remove('dropIntend');
-
         const dragBox = items.find((item) => item.id === parseInt(dragId));
-        const dropBox = items.find((item) => item.id === parseInt(ev.currentTarget.id));
-
         const remainingBoxes = items.filter((item) => item.id !== parseInt(dragId));
 
         let dropPosition = remainingBoxes.map(function (item) { return item.id; }).indexOf(parseInt(ev.currentTarget.id));
@@ -73,7 +60,7 @@ export default function Pantry() {
         remainingBoxes.splice(dropPosition, 0, dragBox)
         setItems(remainingBoxes);
 
-        // dispatch(updateOrderAsync({ drag_id: dragId, drop_id: ev.currentTarget.id }));
+        dispatch(updateOrderAsync({ drag_id: dragId, drop_id: ev.currentTarget.id }));
     };
 
     return (

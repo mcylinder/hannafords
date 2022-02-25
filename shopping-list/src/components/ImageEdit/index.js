@@ -4,8 +4,6 @@ import { Button } from "@material-ui/core";
 import ReactCrop from 'react-image-crop';
 import '../../../node_modules/react-image-crop/dist/ReactCrop.css';
 
-
-
 const useStyles = makeStyles((theme) => {
     return {
         cta: {
@@ -22,12 +20,12 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function ImageEdit({ setImgSrc, imgdb }) {
-
     const classes = useStyles();
 
     const [srcImg, setSrcImg] = useState(null);
+    const [typeImg, setTypeImg] = useState(null);
     const [image, setImage] = useState(null);
-    const [crop, setCrop] = useState({ aspect: 5 / 4 });
+    const [crop, setCrop] = useState({ aspect: 4 / 4 });
     const [showPicker, setShowPicker] = useState(true);
     const [showStatus, setShowStatus] = useState('crop');
 
@@ -35,14 +33,13 @@ export default function ImageEdit({ setImgSrc, imgdb }) {
         setShowPicker(null === srcImg);
     }, [srcImg]);
 
-
     useEffect(() => {
         setSrcImg(imgdb);
     }, [imgdb]);
 
-
     const handleImage = async (event) => {
         setSrcImg(URL.createObjectURL(event.target.files[0]));
+        setTypeImg(event.target.files[0].type);
     };
 
     const getCroppedImg = async () => {
@@ -65,23 +62,20 @@ export default function ImageEdit({ setImgSrc, imgdb }) {
                 crop.height
             );
 
-            const base64Image = canvas.toDataURL("image/png", 1);
+            const base64Image = canvas.toDataURL(typeImg, 1);
             setImgSrc(base64Image);
             setShowStatus('cropped!')
-
 
         } catch (e) {
             setShowStatus('there was an error')
         }
     };
 
-
     return (
         <>
             {showPicker ? (<label htmlFor="imageFilePicker" className={classes.cta}>
                 Select image
             </label>) : ''}
-
 
             <input
                 style={{ visibility: "hidden" }}
@@ -113,14 +107,10 @@ export default function ImageEdit({ setImgSrc, imgdb }) {
                         <Button onClick={() => setSrcImg(null)} className={classes.cta} style={{ marginLeft: '30px' }}>
                             remove
                         </Button>
-
-
                     </div>
                 )}
             </div>
-
         </>
-
     );
 }
 

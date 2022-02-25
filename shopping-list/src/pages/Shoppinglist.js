@@ -1,13 +1,17 @@
-import React from 'react'
-
+import { useEffect, useState } from 'react';
 import { Box } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
 import ListItem from '../components/ListItem';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getItemsAsync, updateOrderAsync } from '../redux/itemSlice';
 
 export default function Shoppinglist() {
 
-    // const classes = useStyles();
+    const dispatch = useDispatch();
+    const stateItems = useSelector((state) => state.items);
+    const [items, setItems] = useState([]);
+
     const theme = useTheme();
     const gridContainer = {
         display: "grid",
@@ -22,12 +26,18 @@ export default function Shoppinglist() {
         },
     };
 
-    const shopping_tiles = ['English Muffins', 'Salt', 'Bag of Arugula and long title here', 'Mushrooms', 'Selzer', 'English Muffins', 'Salt', 'Bag of Arugula', 'Mushrooms', 'Selzer', 'English Muffins', 'Salt', 'Bag of Arugula', 'Mushrooms', 'Selzer'
+    useEffect(() => {
+        dispatch(getItemsAsync());
+    }, [dispatch]);
 
-    ].map((item, ii) => {
+    useEffect(() => {
+        const shoppingList = stateItems.filter((item) => item.use_in_list);
+        setItems(shoppingList);
+    }, [stateItems]);
+
+    const shopping_tiles = items.map((item) => {
         return (
-            <ListItem item={item} key={ii} />
-
+            <ListItem item={item} key={item.id} />
         );
     })
 

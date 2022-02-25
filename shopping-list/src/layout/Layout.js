@@ -4,6 +4,11 @@ import { AppBar, Box, Button, Container, Toolbar, Typography } from '@material-u
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom';
 import Add from '@material-ui/icons/Add';
+import Clear from '@material-ui/icons/Clear';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { updateItemAsync } from '../redux/itemSlice';
+import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -34,9 +39,8 @@ const useStyles = makeStyles((theme) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: theme.spacing(17),
+            width: theme.spacing(35),
             height: theme.spacing(7)
-
         },
         countStatus: {
             marginRight: theme.spacing(1)
@@ -45,8 +49,35 @@ const useStyles = makeStyles((theme) => {
 })
 
 export default function Layout({ children }) {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const location = useLocation();
+    const stateItems = useSelector((state) => state.items);
+    const [itemStatus, setItemStatus] = useState(" ");
+    const [activeItems, setActiveItems] = useState([]);
+
+    const clearSelections = () => {
+        let upDateIds = activeItems.map(({ id }) => id)
+        upDateIds.forEach(id => {
+            dispatch(updateItemAsync({ id: id, use_in_list: 0, put_in_basket: 0 }))
+        })
+    }
+
+    useEffect(() => {
+        const useInList = stateItems.filter(item => item.use_in_list);
+        const putInBask = stateItems.filter(item => item.put_in_bask);
+
+        setActiveItems(useInList);
+
+        switch (location.pathname) {
+            case '/':
+                setItemStatus(`${putInBask.length} of ${useInList.length} in basket`)
+                break;
+            case '/pantry':
+                setItemStatus(`${useInList.length} of ${stateItems.length} to buy`)
+                break;
+        }
+    }, [stateItems]);
 
     return (
         <div className={classes.root}>
@@ -62,12 +93,15 @@ export default function Layout({ children }) {
                     </Link>
                     <Box className={classes.box}>
                         <Typography className={classes.countStatus}>
-                            6 of 15
+                            {itemStatus}
                         </Typography>
                         {location.pathname === '/pantry' ? (
-                            <Link style={{ textDecoration: 'none' }} to="/form">
-                                <Add style={{ color: 'black' }} />
-                            </Link>
+                            <>
+                                <Clear style={{ color: 'black' }} title="Clear selections" onClick={clearSelections} />
+                                <Link style={{ textDecoration: 'none' }} title="Add selection" to="/form">
+                                    <Add style={{ color: 'black' }} />
+                                </Link>
+                            </>
                         ) : (
                             <Link style={{ textDecoration: 'none' }} to="/pantry">
                                     <Button size="small">Pantry</Button>
@@ -75,7 +109,6 @@ export default function Layout({ children }) {
                     </Box>
                 </Toolbar>
             </AppBar>
-
             <Container className={classes.containerLayout}>
                 {children}
             </Container>

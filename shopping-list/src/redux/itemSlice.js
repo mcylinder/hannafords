@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
 
 const ENDPOINT_API = 'http://localhost:8000/api/items';
 
@@ -124,9 +123,6 @@ export const updateOrderAsync = createAsyncThunk(
     }
 )
 
-
-
-
 export const itemSlice = createSlice({
     name: 'items',
     initialState: [],
@@ -139,14 +135,16 @@ export const itemSlice = createSlice({
             state.push(action.payload.item);
         },
         [updateItemAsync.fulfilled]: (state, action) => {
-            state.push(action.payload.item);
+            const index = state.findIndex(
+                (item) => item.id === action.payload.item.id
+            );
+            state[index] = action.payload.item;
         },
         [toggleStatusAsync.fulfilled]: (state, action) => {
             const index = state.findIndex(
                 (item) => item.id === action.payload.item.id
             );
-            state.splice(index, 1);
-            state.push(action.payload.item);
+            state[index] = action.payload.item;
         },
         [deleteItemAsync.fulfilled]: (state, action) => {
             return state.filter((item) => item.id !== action.payload.id);
@@ -156,7 +154,5 @@ export const itemSlice = createSlice({
         },
     },
 });
-
-export const { addItem, toggleStatus, deleteItem, updateItem } = itemSlice.actions;
 
 export default itemSlice.reducer;

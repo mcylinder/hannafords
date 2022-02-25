@@ -10,8 +10,6 @@ import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { useState } from "react";
-
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -23,11 +21,8 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd, setOverId, clName }) {
-
     const classes = useStyles();
-
     const dispatch = useDispatch();
-
     const deleteItem = (deleteId) => {
         dispatch(deleteItemAsync({ id: deleteId }));
     };
@@ -37,9 +32,6 @@ export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd,
         dispatch(toggleStatusAsync({ id: row.id, field: 'use_in_list', status: status }));
     };
 
-    // const [overId, setOverId] = useState(null);
-
-
     const dragFeedback = (ev) => {
         ev.preventDefault()
         if (ev.type === 'dragover') {
@@ -48,7 +40,6 @@ export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd,
             setOverId(null);
         }
     };
-
 
     return (
         <TableRow
@@ -78,13 +69,10 @@ export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd,
                     alt={row.name}
                 />
             </TableCell>
-
             <TableCell component="th" scope="row">
                 {row.name}
             </TableCell>
-
             <TableCell align="right">{row.location} </TableCell>
-
             <TableCell >
                 <IconButton aria-label="delete" onClick={() => deleteItem(row.id)}>
                     <Delete />
