@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteItemAsync, toggleStatusAsync } from "../redux/itemSlice";
+import { deleteItemAsync, toggleStatusAsync, toggleStatus } from "../redux/itemSlice";
 
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom';
@@ -29,7 +29,9 @@ export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd,
 
     const toggleUseInList = (row) => {
         let status = row.use_in_list ? 0 : 1;
-        dispatch(toggleStatusAsync({ id: row.id, field: 'use_in_list', status: status }));
+        let params = { id: row.id, field: 'use_in_list', status: status };
+        dispatch(toggleStatusAsync(params));
+        dispatch(toggleStatus(params));
     };
 
     const dragFeedback = (ev) => {

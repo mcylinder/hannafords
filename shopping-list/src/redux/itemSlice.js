@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const ENDPOINT_API = 'http://localhost:8000/api/items';
+const ENDPOINT_API = 'https://mockdata.roughsketch.es/api/items';
 
 export const getItemsAsync = createAsyncThunk(
     'items/getItemsAsync',
@@ -126,7 +126,17 @@ export const updateOrderAsync = createAsyncThunk(
 export const itemSlice = createSlice({
     name: 'items',
     initialState: [],
-    reducers: {},
+    //UPDATE USER FEEDBACK IMMEDIATELY WHILE SERVER WORKS IN BACKGROUND
+    reducers: {
+        toggleStatus: (state, action) => {
+            const index = state.findIndex((item) => item.id === action.payload.id);
+            state[index][action.payload.field] = action.payload.status;
+        },
+        updateItem: (state, action) => {
+            const index = state.findIndex((item) => item.id === action.payload.id);
+            state[index] = action.payload;
+        },
+    },
     extraReducers: {
         [getItemsAsync.fulfilled]: (state, action) => {
             return action.payload.items;
@@ -154,5 +164,7 @@ export const itemSlice = createSlice({
         },
     },
 });
+
+export const { toggleStatus, updateItem } = itemSlice.actions
 
 export default itemSlice.reducer;

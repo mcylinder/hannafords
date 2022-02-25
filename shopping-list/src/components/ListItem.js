@@ -3,7 +3,7 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch } from "react-redux";
-import { updateItemAsync } from "../redux/itemSlice";
+import { updateItemAsync, updateItem } from "../redux/itemSlice";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -45,6 +45,7 @@ export default function ListItem({ item }) {
     const toggleHave = (item) => {
         let newPut = !item.put_in_bask;
         let revisedValue = { ...item, put_in_bask: newPut, }
+        dispatch(updateItem(revisedValue));
         dispatch(updateItemAsync(revisedValue));
     }
 
