@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => {
             }
         },
         card: {
-            margin: theme.spacing(1)
+            margin: theme.spacing(1),
         },
         headline: {
             [theme.breakpoints.up('md')]: {

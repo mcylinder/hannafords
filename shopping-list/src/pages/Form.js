@@ -43,7 +43,8 @@ export default function Form() {
     const [dataToSubmit, setDataToSubmit] = useState({
         name: '',
         location: '',
-        image: ''
+        image: '',
+        sequence: '',
     });
 
     const dispatch = useDispatch();
@@ -105,7 +106,8 @@ export default function Form() {
                         ...prevState,
                         name: result.item.name,
                         location: result.item.location,
-                        image: result.item.image
+                        image: result.item.image,
+                        sequence: result.item.sequence,
                     }));
 
                     setImgdb(result.item.image);
@@ -137,6 +139,15 @@ export default function Form() {
                 label="Location"
                 value={dataToSubmit.location}
                 name="location"
+                onChange={onChange}
+                className={classes.textInput}
+            />
+
+            <TextField
+                required
+                label="Sequence"
+                value={dataToSubmit.sequence}
+                name="sequence"
                 onChange={onChange}
                 className={classes.textInput}
             />

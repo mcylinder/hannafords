@@ -71,10 +71,10 @@ export default function Layout({ children }) {
 
         switch (location.pathname) {
             case '/':
-                setItemStatus(`${putInBask.length} of ${useInList.length} in basket`)
+                setItemStatus(`${putInBask.length} of ${useInList.length}`)
                 break;
             case '/pantry':
-                setItemStatus(`${useInList.length} of ${stateItems.length} to buy`)
+                setItemStatus(`${useInList.length} of ${stateItems.length}`)
                 break;
         }
     }, [stateItems]);

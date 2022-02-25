@@ -15,7 +15,10 @@ const useStyles = makeStyles((theme) => {
     return {
         cardMedia: {
             objectFit: 'contain',
-            height: theme.spacing(9),
+            // height: theme.spacing(9),
+            width: '100px',
+            maxHeight: '100px',
+            // maxWidth: '100px',
         },
     }
 });

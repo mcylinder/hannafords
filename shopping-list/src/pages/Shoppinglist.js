@@ -22,7 +22,7 @@ export default function Shoppinglist() {
             gridTemplateColumns: "repeat(4, 1fr)"
         },
         [theme.breakpoints.down('xs')]: {
-            gridTemplateColumns: "repeat(3, 1fr)"
+            gridTemplateColumns: "repeat(2, 1fr)"
         },
     };
 
