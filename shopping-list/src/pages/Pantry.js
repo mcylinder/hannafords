@@ -9,9 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import { makeStyles } from '@material-ui/styles';
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 import { getItemsAsync, updateOrderAsync } from '../redux/itemSlice';
 
 const useStyles = makeStyles((theme) => {
@@ -28,8 +28,11 @@ export default function Pantry() {
     // const classes = useStyles();
     const dispatch = useDispatch();
     const stateItems = useSelector((state) => state.items);
+    const filter = useSelector((state) => state.meta);
     const [items, setItems] = useState([]);
     const [dragId, setDragId] = useState();
+
+
 
     useEffect(() => {
         dispatch(getItemsAsync());
@@ -77,13 +80,15 @@ export default function Pantry() {
                 </TableHead>
                 <TableBody>
                     {items.map((item) => (
-                        <PantryItem
+
+                        item.name.toLowerCase().indexOf(filter.value) > -1 || null === filter.value ? (<PantryItem
                             setOverId={setOverId}
                             handleDrag={handleDrag}
                             handleDrop={handleDrop}
                             handleDragEnd={handleDragEnd}
                             clName={overId === item.id ? 'dropIntend' : ''}
                             key={item.id} row={item} />
+                        ) : null
                     ))}
 
                 </TableBody>

@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => {
             maxHeight: '100px',
             // maxWidth: '100px',
         },
+        smGray: {
+            color: '#d0d0d0',
+        }
     }
 });
 
@@ -77,7 +80,7 @@ export default function PantryItem({ row, handleDrag, handleDrop, handleDragEnd,
             <TableCell component="th" scope="row">
                 {row.name}
             </TableCell>
-            <TableCell align="right">{row.location} </TableCell>
+            <TableCell align="right">{row.location}&nbsp;<span className={classes.smGray}>{row.sequence}</span> </TableCell>
             <TableCell >
                 <IconButton aria-label="delete" onClick={() => deleteItem(row.id)}>
                     <Delete />

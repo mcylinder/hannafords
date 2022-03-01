@@ -22,7 +22,7 @@ export default function Shoppinglist() {
             gridTemplateColumns: "repeat(4, 1fr)"
         },
         [theme.breakpoints.down('xs')]: {
-            gridTemplateColumns: "repeat(2, 1fr)"
+            gridTemplateColumns: "repeat(3, 1fr)"
         },
     };
 
@@ -35,17 +35,32 @@ export default function Shoppinglist() {
         setItems(shoppingList);
     }, [stateItems]);
 
+
     const shopping_tiles = items.map((item) => {
-        return (
-            <ListItem item={item} key={item.id} />
-        );
+        if (!item.put_in_bask) {
+            return (
+                <ListItem item={item} key={item.id} />
+            );
+        }
+    })
+
+
+    const selected_shopping_tiles = items.map((item) => {
+        if (item.put_in_bask) {
+            return (
+                <ListItem item={item} key={item.id} />
+            );
+        }
     })
 
     return (
-        <div>
+        <>
             <Box sx={gridContainer}>
                 {shopping_tiles}
             </Box>
-        </div>
+            <Box sx={gridContainer}>
+                {selected_shopping_tiles.reverse()}
+            </Box>
+        </>
     )
 }

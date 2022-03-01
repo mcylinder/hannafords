@@ -10,6 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateItemAsync } from '../redux/itemSlice';
 import { useEffect, useState } from 'react';
 
+
+
+import { filterData } from "../redux/metaSlice";
+
 const useStyles = makeStyles((theme) => {
     return {
         root: {
@@ -44,6 +48,12 @@ const useStyles = makeStyles((theme) => {
         },
         countStatus: {
             marginRight: theme.spacing(1)
+        },
+        srch: {
+            padding: '6px',
+            width: '162px',
+            margin: '0 10px',
+
         }
     }
 })
@@ -56,12 +66,18 @@ export default function Layout({ children }) {
     const [itemStatus, setItemStatus] = useState(" ");
     const [activeItems, setActiveItems] = useState([]);
 
+
     const clearSelections = () => {
         let upDateIds = activeItems.map(({ id }) => id)
         upDateIds.forEach(id => {
             dispatch(updateItemAsync({ id: id, use_in_list: 0, put_in_basket: 0 }))
         })
     }
+
+    const filt = ({ target }) => {
+        dispatch(filterData(target.value));
+    }
+
 
     useEffect(() => {
         const useInList = stateItems.filter(item => item.use_in_list);
@@ -91,6 +107,7 @@ export default function Layout({ children }) {
                     <Link style={{ textDecoration: 'none' }} to="/">
                     <Typography gutterBottom variant="h5" className={classes.header} component="div" >Shoppinglist</Typography>
                     </Link>
+                    <input className={classes.srch} onChange={filt} type="text" />
                     <Box className={classes.box}>
                         <Typography className={classes.countStatus}>
                             {itemStatus}

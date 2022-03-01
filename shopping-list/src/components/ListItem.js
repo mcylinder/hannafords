@@ -58,9 +58,9 @@ export default function ListItem({ item }) {
                 alt={item.name}
             />
             <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5" component="div" className={classes.headline}>
+                {/* <Typography gutterBottom variant="h5" component="div" className={classes.headline}>
                     {item.name} 
-                </Typography>
+                </Typography> */}
                 <Typography variant="overline" display="block" gutterBottom>
                     {item.location}
                 </Typography>
