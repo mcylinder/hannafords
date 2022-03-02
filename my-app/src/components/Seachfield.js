@@ -15,6 +15,6 @@ const StyledInput = styled.input`
   }
 `;
 
-export default function Searchfield() {
-    return <StyledInput placeholder="filter..." type="text" />;
+export default function Searchfield({ performSearch }) {
+    return <StyledInput onChange={performSearch} placeholder="filter..." type="text" />;
 }

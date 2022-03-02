@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { BiBookmark } from "react-icons/bi";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ const MarkStyleActive = styled(MarkStyle)`
 `;
 
 export default function Pantry() {
+    const flt = useSelector((state) => state.item.searchTerm);
     const [bookstatus, setBookstatus] = useState({});
 
     const toggleActive = (id) => {
@@ -50,7 +52,9 @@ export default function Pantry() {
     }, []);
 
     const storedObjects = JSON.parse(reactLocalStorage.get("itemStorage"));
-    const listItems = storedObjects.map((item) => (
+    const filtItems = storedObjects.filter(item => item.name.toLowerCase().indexOf(flt) > -1);
+
+    const listItems = filtItems.map((item) => (
         <ItemList key={item.id} onClick={() => toggleActive(item.id)}>
             {bookstatus[item.id] ? <MarkStyleActive /> : <MarkStyle />}
             <ItemText>{parse(item.name)}</ItemText>

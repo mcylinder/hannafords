@@ -3,6 +3,7 @@ import { reactLocalStorage } from 'reactjs-localstorage';
 
 const initialState = {
     airTable: [],
+    searchTerm: ''
 }
 
 export const itemSlice = createSlice({
@@ -14,10 +15,13 @@ export const itemSlice = createSlice({
             reactLocalStorage.remove('itemStorage');
             reactLocalStorage.setObject('itemStorage', action.payload)
         },
+        updateSearchTerm: (state, action) => {
+            state.searchTerm = action.payload;
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateFromAirTable } = itemSlice.actions
+export const { updateFromAirTable, updateSearchTerm } = itemSlice.actions
 
 export default itemSlice.reducer

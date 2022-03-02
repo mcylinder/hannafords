@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { updateSearchTerm } from "../redux/itemsSlice";
+
 import { BiCart, BiData, BiAddToQueue } from "react-icons/bi";
 import Searchfield from "./Seachfield";
 
@@ -37,6 +41,11 @@ const BiAddToQueueStyled = styled(BiAddToQueue)`
 
 export default function Header() {
     const path = useLocation().pathname;
+    const dispatch = useDispatch();
+
+    const performSearch = ({ target }) => {
+        dispatch(updateSearchTerm(target.value));
+    }
 
     if (path === "/") {
         return (
@@ -54,7 +63,7 @@ export default function Header() {
     if (path === "/pantry") {
         return (
             <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <Searchfield />
+                <Searchfield performSearch={performSearch} />
                 <IconOptions>
                     <Link to={"/"}>
                         <BiCartStyled />
