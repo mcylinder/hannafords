@@ -31,7 +31,6 @@ body {
   max-width:375px;
   display:flex;
   margin: 0 auto;
-  border: 1px solid #ededed;
   padding: 25px 27px;
     box-sizing: border-box;
 }
@@ -44,6 +43,12 @@ body {
  justify-content: space-between;
 }
 
+nav {
+  position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 100;
+}
 `;
 
 ReactDOM.render(

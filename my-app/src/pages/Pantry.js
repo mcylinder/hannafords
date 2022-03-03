@@ -41,7 +41,7 @@ export default function Pantry() {
 
     const toggleActive = (id) => {
         const bookMarked = JSON.parse(reactLocalStorage.get("bookMarked", "{}"));
-        bookMarked[id] = null === bookMarked[id] ? false : bookMarked[id];
+      bookMarked[id] = bookMarked[id] ?? false;
         bookMarked[id] = !bookMarked[id];
         reactLocalStorage.set("bookMarked", JSON.stringify(bookMarked));
         setBookstatus(bookMarked);
@@ -51,7 +51,7 @@ export default function Pantry() {
         setBookstatus(JSON.parse(reactLocalStorage.get("bookMarked", "{}")));
     }, []);
 
-    const storedObjects = JSON.parse(reactLocalStorage.get("itemStorage"));
+  const storedObjects = JSON.parse(reactLocalStorage.get("itemStorage", "[]"));
     const filtItems = storedObjects.filter(item => item.name.toLowerCase().indexOf(flt) > -1);
 
     const listItems = filtItems.map((item) => (

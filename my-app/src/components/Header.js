@@ -19,6 +19,23 @@ const IconOptions = styled.div`
 
 `;
 
+const statusComplete = `
+color: #03b5b6;
+font-weight: 700;
+font-size: 1.7rem;
+`
+
+const StatusCount = styled.div`
+font-family: var(  --snsrf);
+font-style: normal;
+font-weight: 500;
+font-size: 1.1rem;
+line-height: 1.8rem;
+color: black;
+${props => props.msg === 'Done' ? statusComplete : null}
+`;
+
+
 const BiCartStyled = styled(BiCart)`
   width: 36px;
   height: 36px;
@@ -39,7 +56,7 @@ const BiAddToQueueStyled = styled(BiAddToQueue)`
   color: black;
 `;
 
-export default function Header() {
+export default function Header({ statusCount }) {
     const path = useLocation().pathname;
     const dispatch = useDispatch();
 
@@ -50,7 +67,7 @@ export default function Header() {
     if (path === "/") {
         return (
             <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <div></div>
+                <StatusCount msg={statusCount}>{statusCount}</StatusCount>
                 <IconOptions>
                     <Link to={"/pantry"}>
                         <BiAddToQueueStyled />
@@ -80,7 +97,7 @@ export default function Header() {
     if (path === "/manage") {
         return (
             <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <Searchfield />
+                <div></div>
                 <IconOptions>
                     <div></div>
                     <Link to={"/pantry"}>

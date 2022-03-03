@@ -42,13 +42,8 @@ const BiCloudDownloadStyled = styled(BiCloudDownload)`
 export default function Manage() {
     const dispatch = useDispatch();
 
-    // const storedItems = useSelector((state) => state.item.airTable);
-    // console.log(storedItems);
-
     const [loading, setLoading] = useState(false);
-
-    const url = "http://localhost:3001/run.php";
-    // const url ='/run.php';
+    const url = "http://food.peterducharme.com/run.php";
 
     const updateFromJson = async () => {
         setLoading(true);
@@ -57,10 +52,11 @@ export default function Manage() {
         dispatch(updateFromAirTable(items));
         setLoading(false);
     }
-    const clearBookMarks = () => {
-        reactLocalStorage.set("bookMarked", JSON.stringify({}));
-    }
 
+    const clearBookMarks = () => {
+        reactLocalStorage.set("bookMarked", "{}");
+        reactLocalStorage.set("basketMarked", "{}");
+    }
 
     return (
         <div>
