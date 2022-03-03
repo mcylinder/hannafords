@@ -55,7 +55,7 @@ export default function Basket({ setStatusCount }) {
     }, []);
 
     const toggleActive = (id) => {
-        const { basket, book } = localStore();
+        const { basket } = localStore();
         const basketMarked = basket;
         basketMarked[id] = basketMarked[id] ?? false;
         basketMarked[id] = !basketMarked[id];

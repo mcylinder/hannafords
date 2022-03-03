@@ -1,8 +1,7 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateFromAirTable } from "../redux/itemsSlice";
 import { reactLocalStorage } from "reactjs-localstorage";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
 import { BiBookmarkMinus, BiCloudDownload } from "react-icons/bi";
 import { useState } from "react";
 
