@@ -8,10 +8,11 @@ $data = array(
     "view" => "Grid view"
 );
 
+$bearer_code = '';
 
 $postflds = http_build_query($data);
 $url = "https://api.airtable.com/v0/apptpGRna1z7zWWyh/Table%201?" . $postflds;
-$headers = array('Content-Type: application/json', 'Authorization: Bearer keyb5KlF1a4mUuLOH');
+$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $bearer_code);
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_VERBOSE, 0);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
