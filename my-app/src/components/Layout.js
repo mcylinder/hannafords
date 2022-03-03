@@ -3,11 +3,12 @@ import Header from './Header'
 import Basket from '../pages/Basket';
 import Pantry from '../pages/Pantry';
 import Manage from '../pages/Manage';
+
 import { useState } from 'react';
 
 export default function Layout({ page }) {
 
-    const [statusCount, setStatusCount] = useState('0/0');
+    const [statusCount, setStatusCount] = useState('');
 
     return (
         <>

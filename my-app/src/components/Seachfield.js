@@ -16,5 +16,9 @@ const StyledInput = styled.input`
 `;
 
 export default function Searchfield({ performSearch }) {
-    return <StyledInput onChange={performSearch} placeholder="filter..." type="text" />;
+  return <StyledInput
+    aria-label="search field"
+    onChange={performSearch}
+    placeholder="filter..."
+    type="text" />;
 }

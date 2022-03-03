@@ -21,6 +21,7 @@ const DataButton = styled.button`
   font-size: 1.2rem;
   background-color: white;
   cursor: pointer;
+  ${props => props.isloading === 'true' ? 'opacity: 0.2;' : ''}
 `;
 
 const iconSize = 30;
@@ -63,9 +64,9 @@ export default function Manage() {
             <DataButton onClick={clearBookMarks}>
                 <BiBookmarkMinusStyled /> Clear selections
             </DataButton>
-            <DataButton onClick={updateFromJson}>
+            <DataButton onClick={updateFromJson} isloading={loading.toString()}>
                 <BiCloudDownloadStyled />
-                {loading ? 'Syncing' : 'Sync data'}
+                {loading ? 'syncing..' : 'Sync data'}
             </DataButton>
         </div>
     );

@@ -37,22 +37,31 @@ const MarkStyleActive = styled(MarkStyle)`
 
 export default function Pantry() {
     const flt = useSelector((state) => state.item.searchTerm);
-    const [bookstatus, setBookstatus] = useState({});
+  const [bookstatus, setBookstatus] = useState({});
+
+  const localStore = () => {
+    const basket = JSON.parse(reactLocalStorage.get("basketMarked", "{}"));
+    const book = JSON.parse(reactLocalStorage.get("bookMarked", "{}"));
+    const itemStorage = JSON.parse(reactLocalStorage.get("itemStorage", "[]"));
+    return { basket, book, itemStorage }
+  }
+
 
     const toggleActive = (id) => {
-        const bookMarked = JSON.parse(reactLocalStorage.get("bookMarked", "{}"));
-      bookMarked[id] = bookMarked[id] ?? false;
-        bookMarked[id] = !bookMarked[id];
-        reactLocalStorage.set("bookMarked", JSON.stringify(bookMarked));
-        setBookstatus(bookMarked);
+      const { book } = localStore();
+      book[id] = book[id] ?? false;
+      book[id] = !book[id];
+      reactLocalStorage.set("bookMarked", JSON.stringify(book));
+      setBookstatus(book);
     };
 
-    useEffect(() => {
-        setBookstatus(JSON.parse(reactLocalStorage.get("bookMarked", "{}")));
+  useEffect(() => {
+    const { book } = localStore();
+    setBookstatus(book);
     }, []);
 
-  const storedObjects = JSON.parse(reactLocalStorage.get("itemStorage", "[]"));
-    const filtItems = storedObjects.filter(item => item.name.toLowerCase().indexOf(flt) > -1);
+  const storedObjects = localStore().itemStorage;
+  const filtItems = storedObjects.filter(item => item.name.toLowerCase().indexOf(flt) > -1);
 
     const listItems = filtItems.map((item) => (
         <ItemList key={item.id} onClick={() => toggleActive(item.id)}>

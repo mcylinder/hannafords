@@ -36,7 +36,6 @@ color: #b6b5b5;
 
 export default function Basket({ setStatusCount }) {
 
-
     const [bookstatus, setBookstatus] = useState({});
     const [basketstatus, setBasketstatus] = useState({});
 
@@ -45,7 +44,7 @@ export default function Basket({ setStatusCount }) {
     const localStore = () => {
         const basket = JSON.parse(reactLocalStorage.get("basketMarked", "{}"));
         const book = JSON.parse(reactLocalStorage.get("bookMarked", "{}"));
-        return { basket: basket, book: book }
+        return { basket, book }
     }
 
     useEffect(() => {
@@ -97,7 +96,6 @@ export default function Basket({ setStatusCount }) {
         return storedObjects.map((item) => (item.location === group && bookstatus[item.id]) ? (
             <ItemList key={item.id} onClick={() => toggleActive(item.id)}>
                 <ItemText inbasket={basketstatus[item.id]}>{parse(item.name)}</ItemText>
-
             </ItemList>
         ) : null
         );

@@ -16,14 +16,13 @@ const IconOptions = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 96px;
-
 `;
 
 const statusComplete = `
 color: #03b5b6;
 font-weight: 700;
 font-size: 1.7rem;
-`
+`;
 
 const StatusCount = styled.div`
 font-family: var(  --snsrf);
@@ -34,7 +33,6 @@ line-height: 1.8rem;
 color: black;
 ${props => props.msg === 'Done' ? statusComplete : null}
 `;
-
 
 const BiCartStyled = styled(BiCart)`
   width: 36px;
@@ -64,49 +62,50 @@ export default function Header({ statusCount }) {
         dispatch(updateSearchTerm(target.value));
     }
 
-    if (path === "/") {
-        return (
-            <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <StatusCount msg={statusCount}>{statusCount}</StatusCount>
-                <IconOptions>
-                    <Link to={"/pantry"}>
-                        <BiAddToQueueStyled />
-                    </Link>
-                </IconOptions>
-            </StyledDom>
-        );
-    }
+    switch (path) {
 
-    if (path === "/pantry") {
-        return (
-            <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <Searchfield performSearch={performSearch} />
-                <IconOptions>
-                    <Link to={"/"}>
-                        <BiCartStyled />
-                    </Link>
+        case '/':
+            return (
+                <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
+                    <StatusCount msg={statusCount}>{statusCount}</StatusCount>
+                    <IconOptions>
+                        <Link aria-label="pantry list" to={"/pantry"}>
+                            <BiAddToQueueStyled />
+                        </Link>
+                    </IconOptions>
+                </StyledDom>
+            );
 
-                    <Link to={"/manage"}>
-                        <BiDataStyled />
-                    </Link>
-                </IconOptions>
-            </StyledDom>
-        );
-    }
+        case '/pantry':
+            return (
+                <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
+                    <Searchfield performSearch={performSearch} />
+                    <IconOptions>
+                        <Link aria-label="shopping list" to={"/"}>
+                            <BiCartStyled />
+                        </Link>
 
-    if (path === "/manage") {
-        return (
-            <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
-                <div></div>
-                <IconOptions>
+                        <Link aria-label="manage data" to={"/manage"}>
+                            <BiDataStyled />
+                        </Link>
+                    </IconOptions>
+                </StyledDom>
+            );
+
+        case '/manage':
+            return (
+                <StyledDom className={["container", "fl-md", "fl-jcsb"]}>
                     <div></div>
-                    <Link to={"/pantry"}>
-                        <BiAddToQueueStyled />
-                    </Link>
-                </IconOptions>
-            </StyledDom>
-        );
-    }
+                    <IconOptions>
+                        <div></div>
+                        <Link aria-label="pantry list" to={"/pantry"}>
+                            <BiAddToQueueStyled />
+                        </Link>
+                    </IconOptions>
+                </StyledDom>
+            );
 
-    return <></>;
+        default:
+            return <></>;
+    }
 }
