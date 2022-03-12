@@ -36,7 +36,7 @@ const MarkStyleActive = styled(MarkStyle)`
 `;
 
 export default function Pantry() {
-    const flt = useSelector((state) => state.item.searchTerm);
+    const flt = useSelector((state) => state.item.searchTerm.toLowerCase());
   const [bookstatus, setBookstatus] = useState({});
 
   const localStore = () => {
@@ -53,12 +53,24 @@ export default function Pantry() {
       book[id] = !book[id];
       reactLocalStorage.set("bookMarked", JSON.stringify(book));
       setBookstatus(book);
+      if(book[id]) toggleBookMark(id, 'add');
+      if(!book[id]) toggleBookMark(id, 'remove');
+
     };
 
   useEffect(() => {
     const { book } = localStore();
     setBookstatus(book);
     }, []);
+
+    const toggleBookMark = async (id, state) => {
+      let queryString = new URLSearchParams({ 'action' : state, 'id' : id});  
+      const ignore = await fetch("http://food.peterducharme.com/bookmark.php?"+queryString, {
+        method: 'POST',
+        redirect: 'follow'
+      })
+   }
+
 
   const storedObjects = localStore().itemStorage;
   const filtItems = storedObjects.filter(item => item.name.toLowerCase().indexOf(flt) > -1);

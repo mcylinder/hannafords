@@ -50,13 +50,40 @@ export default function Manage() {
         const response = await fetch(url);
         const items = await response.json();
         dispatch(updateFromAirTable(items));
+        getBkmrks();
         setLoading(false);
     }
 
     const clearBookMarks = () => {
         reactLocalStorage.set("bookMarked", "{}");
         reactLocalStorage.set("basketMarked", "{}");
+        clearAll();
     }
+
+    const clearAll = async () => {
+        let queryString = new URLSearchParams({ 'action' : 'clear_all'});  
+        const ignore = await fetch("http://food.peterducharme.com/bookmark.php?"+queryString, {
+          method: 'POST',
+          redirect: 'follow'
+        })
+     }
+  
+     const getBkmrks = async () => {
+
+        let queryString = new URLSearchParams({ 'action' : 'get_all'});  
+        const ignore = await fetch("http://food.peterducharme.com/bookmark.php?"+queryString, {
+          method: 'POST',
+          redirect: 'follow'
+        }).then(response => response.text())
+        .then(result => {
+            result = result === '[]' ? '{}' : result;
+            reactLocalStorage.set("bookMarked", result);
+        })
+        .catch(error => console.log('error', error));
+        
+     }
+  
+
 
     return (
         <div>
