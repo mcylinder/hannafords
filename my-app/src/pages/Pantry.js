@@ -4,6 +4,9 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { BiBookmark } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import parse from 'html-react-parser';
+import { useDispatch } from "react-redux";
+import { updateSearchTerm } from "../redux/itemsSlice";    
+
 
 const ItemList = styled.li`
   display: flex;
@@ -37,6 +40,8 @@ const MarkStyleActive = styled(MarkStyle)`
 
 export default function Pantry() {
     const flt = useSelector((state) => state.item.searchTerm.toLowerCase());
+  const dispatch = useDispatch();
+
   const [bookstatus, setBookstatus] = useState({});
 
   const localStore = () => {
@@ -54,7 +59,8 @@ export default function Pantry() {
       reactLocalStorage.set("bookMarked", JSON.stringify(book));
       setBookstatus(book);
       if(book[id]) toggleBookMark(id, 'add');
-      if(!book[id]) toggleBookMark(id, 'remove');
+      if (!book[id]) toggleBookMark(id, 'remove');
+      dispatch(updateSearchTerm(''));
 
     };
 
